@@ -1,4 +1,6 @@
+const { ErrorHandler } = require("../middleware/error");
 const Note = require("../models/note");
+const { notesReponse } = require("../utils/notesSuccessReponse");
 
 /**
  * type: GET
@@ -8,9 +10,9 @@ const fetchNote = async (req, res, next) => {
   try {
     const note = await Note.findById(req.params.id);
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw new ErrorHandler({ statusCode: 404, message: "Note not found" });
     }
-    res.json(note);
+    res.json(notesReponse.get({ statusCode: 200, data: note }));
   } catch (error) {
     next(error);
   }

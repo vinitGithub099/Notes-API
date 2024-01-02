@@ -1,4 +1,5 @@
 const Note = require("../models/note");
+const { notesReponse } = require("../utils/notesSuccessReponse");
 
 /**
  * type: GET
@@ -7,7 +8,7 @@ const Note = require("../models/note");
 const fetchNotes = async (req, res, next) => {
   try {
     const notes = await Note.find();
-    res.json(notes);
+    res.json(notesReponse.getAll({ statusCode: 200, data: notes }));
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,6 @@
+const { ErrorHandler } = require("../middleware/error");
 const Note = require("../models/note");
+const { notesReponse } = require("../utils/notesSuccessReponse");
 
 /**
  * type: DELETE
@@ -7,11 +9,17 @@ const Note = require("../models/note");
  */
 const deleteNote = async (req, res, next) => {
   try {
+    if (!req.parmas.id) {
+      throw new ErrorHandler({
+        statusCode: 400,
+        message: "id parameter missing",
+      });
+    }
     const note = await Note.findOneAndDelete({ _id: req.params.id });
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw new ErrorHandler({ statusCode: 404, message: "Note not found" });
     }
-    res.json({ message: "Note deleted successfully" });
+    res.json(notesReponse.delete({ statusCode: 204, data: note }));
   } catch (error) {
     next(error);
   }

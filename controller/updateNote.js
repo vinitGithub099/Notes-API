@@ -1,4 +1,6 @@
+const { ErrorHandler } = require("../middleware/error");
 const Note = require("../models/note");
+const { notesReponse } = require("../utils/notesSuccessReponse");
 
 /**
  * type: PUT
@@ -7,6 +9,12 @@ const Note = require("../models/note");
  */
 const updateNote = async (req, res, next) => {
   try {
+    if (!req.body.title || req.body.content) {
+      throw new ErrorHandler({
+        statusCode: 400,
+        message: "Insufficient details",
+      });
+    }
     const { title, content } = req.body;
     const note = await Note.findByIdAndUpdate(
       req.params.id,
@@ -14,9 +22,9 @@ const updateNote = async (req, res, next) => {
       { new: true }
     );
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw new ErrorHandler({ statusCode: 404, message: "Note not found" });
     }
-    res.json(note);
+    res.json(notesReponse.update({ statusCode: 200, data: note }));
   } catch (error) {
     next(error);
   }
