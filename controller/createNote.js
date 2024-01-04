@@ -8,7 +8,7 @@ const { notesReponse } = require("../utils/notesSuccessReponse");
  */
 const createNote = async (req, res, next) => {
   try {
-    if (!req.body.title || req.body.content) {
+    if (!req.body.title || !req.body.content) {
       throw new ErrorHandler({
         statusCode: 400,
         message: "Insufficient details",

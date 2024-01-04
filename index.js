@@ -3,8 +3,6 @@ const connectDB = require("./db/db");
 const app = express();
 const bodyParser = require("body-parser");
 const notesRoutes = require("./routes/notesRoutes");
-// const { handleError } = require("./middleware/error");
-const { ErrorResponse } = require("./utils/respone");
 const { handleError } = require("./middleware/error");
 const PORT = process.env.PORT || 3000;
 
@@ -26,3 +24,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

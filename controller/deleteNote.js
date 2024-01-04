@@ -9,7 +9,7 @@ const { notesReponse } = require("../utils/notesSuccessReponse");
  */
 const deleteNote = async (req, res, next) => {
   try {
-    if (!req.parmas.id) {
+    if (!req.params.id) {
       throw new ErrorHandler({
         statusCode: 400,
         message: "id parameter missing",
